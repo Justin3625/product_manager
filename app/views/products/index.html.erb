@@ -1,33 +1,42 @@
-<h1>Listing products</h1>
-
-<table>
+<%- model_class = Products -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => Products %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Product</th>
-      <th>Product name</th>
-      <th>Product desc</th>
-      <th>Warehouse</th>
-      <th>Product count</th>
-      <th colspan="3"></th>
+      <th>ID</th>
+      <th><%= model_class.human_attribute_name(:product_id) %></th>
+      <th><%= model_class.human_attribute_name(:product_name) %></th>
+      <th><%= model_class.human_attribute_name(:product_desc) %></th>
+      <th><%= model_class.human_attribute_name(:product_count) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
-    <% @products.each do |product| %>
+    <% @products.each do |products| %>
       <tr>
-        <td><%= product.product_id %></td>
-        <td><%= product.product_name %></td>
-        <td><%= product.product_desc %></td>
-        <td><%= product.warehouse %></td>
-        <td><%= product.product_count %></td>
-        <td><%= link_to 'Show', product %></td>
-        <td><%= link_to 'Edit', edit_product_path(product) %></td>
-        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= products.id %></td>
+        <td><%= products.product_id %></td>
+        <td><%= products.product_name %></td>
+        <td><%= products.product_desc %></td>
+        <td><%= products.product_count %></td>
+        <td><%=l products.created_at, format: :long %></td>
+        <td>
+          <%= link_to products_path(products), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+            <%= glyph 'info-sign' %>
+            <%= glyph 'pencil' %>
+          <%- end -%>
+          <%= link_to products_path(products), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+            <%= glyph 'remove' %>
+          <%- end -%>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Product', new_product_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_products_path,
+            :class => 'btn btn-primary' %>
